@@ -1,0 +1,174 @@
+---
+title: "Lecture 4: Gelman Hill Ch 1"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(show.signif.stars = FALSE)
+library(tidyverse) 
+```
+
+
+## Why multilevel regression modeling?
+
+Consider a housing dataset that contains information about sales of 2000 houses across 100 different zipcodes.
+
+```{r}
+housing_sales <- read_csv('http://math.montana.edu/ahoegh/teaching/stat408/datasets/HousingSales.csv')
+```
+
+_Q:_ Do you expect to see the same relationship between the size of the home `Living_Sq_Ft` and the sales price for all cities? Note a few cities in this dataset include Lincoln, NE; Lewistown, MT; Miami, FL; Honolulu, HI; Snowmass, CO; and Flint, MI.
+
+\vfill
+
+
+\vfill
+
+\vfill
+
+\vfill
+
+\vfill
+\vfill
+
+\vfill
+\vfill
+
+\newpage
+
+```{r}
+housing_sales %>% filter(State %in% c("NE", "MT", "CO", 'HI','FL','MI')) %>%
+  mutate(sales_price = Closing_Price / 1000000, thousand_sq_ft = Living_Sq_Ft / 1000) %>% 
+  ggplot(aes(y = sales_price, x = thousand_sq_ft, color = State)) + 
+  geom_point() + geom_smooth(method = 'loess') + 
+  xlab('Living Space (1000 square feet)') + 
+  ylab('Sales Price (million dollars)') + facet_wrap(.~State) +
+  ggtitle('Housing prices vs. square footage for select states')
+```
+
+\vfill
+
+Another option would be to fit separate models for each zipcode. What are some of the implications for this type of model?
+
+\vfill
+\vfill
+
+\vfill
+\vfill
+
+\newpage
+
+A multilevel, or hierarchical model, contains another level that models the covariates from each individual level model.
+
+\vfill
+
+Thus rather than 
+$$Y_i = \alpha + \beta X_i + \epsilon_i,$$
+where $i = 1, ..., n$ corresponds to the n houses, the model can be written as
+\vfill
+\vfill
+\vfill
+\vfill
+
+### Terminology
+
+These multilevel or hierarchical models carry this designation for two reasons:
+
+1. There are multiple levels in the data structure. In this case, consider houses nested in zipcodes.
+\vfill
+2. The model also has multiple levels. 
+\vfill
+
+Multilevel models could also be applied for several layers...
+\vfill
+
+__About Mixed Models / Random Effects__ The authors intentionally avoid the term "random effects" and hence, mixed models. More on this later...
+\vfill
+
+GH include several interesting applications of hierarchical models from their own research. Read through these in Chapter 1.2.
+
+\vfill
+
+\newpage
+
+#### Motivations for using hierarchical models
+
+__Learn about treatment effects that may vary:__ 
+
+\vfill
+
+__Use all of the data to perform inferences for groups with small sample size:__ 
+
+\vfill
+
+__Prediction:__ 
+
+\vfill
+
+__Analysis of Structured Data:__ 
+
+
+\vfill
+
+__More efficient inference for regression parameters:__ 
+
+\vfill
+
+__Including predictors at multiple levels__ 
+
+
+\vfill
+
+__Getting the right standard error accurately accounting for uncertainty in prediction and estimation:__ 
+
+
+\vfill
+
+\newpage
+
+### Features of GH and this course
+
+GH "present methods and software that allow the reader to fit complicated, linear or nonlinear, nested or non-nested models. They emphasize the use of the statistical software packages R and BUGS..." (Stan too)
+\vfill
+
+"Most books define regression in terms of matrix operations. GH avoid much of this matrix algebra for the simple reason that it is now done automatically by computers. We are more interested in understanding the 'forward' or predictive, matrix multiplacation $X\beta$ than the more complicated inferential formula $(X ^T X)^{-1} X^T y$. The latter computation and its generalizations are important but can be done out of sight of the user."
+\vfill
+
+GH "try as much as possible to display regression results graphically rather than through tables... GH consider graphical display of model estimates to be not just a useful teaching method but also a necessary tool in applied research.
+
+Statistical texts commonly recommend graphical displays for model diagnostics. These can ve very useful,... but here we are emphasizing graphical displays of the fitted models themselves. It is our experience that, even when a model fits data well, we have difficulty understanding it if all we do is look at the tables of regresssion coefficients."
+\vfill
+
+"Ultimately, you have to learn these methods by doing it yourself, and this chapter (CH1) is intented to make things easier by recounting stories about how we learned this by doing it ourselves. But we warn you ahead of time that we include more of our successes than our failures."
+\vfill
+
+### Costs and benefits of GH approach
+
+Using the GH approach to statistics is not easy. The challenge is not mathematical, but conceptual and computational.
+\vfill
+
+Fitting classical regression and generalized regression models is easy in R, but graphing the results and simulating predictions can be a challenging programming expercise.
+\vfill
+
+With multilevel modeling, model fitting is more complicated. (using R and Bugs and STAN)
+\vfill
+
+The multilevel approach does have several advantages:
+- You can fit a greater variety of model
+- By working with simulations (rather than simply point estimates of parameters), you can directly capture inferential uncertainty and propogate it into predictions.
+
+\vfill
+
+### Course Structure
+
+The course will initially focus on using R to 
+
+1. fit linear and generalized linear models,
+2. graph data and estimated models, and
+3. use simulation to propogate uncertainty in inferences and prediction.
+
+\vfill
+
+Then the focus will shift to hierarchical models.
